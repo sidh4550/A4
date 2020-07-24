@@ -6,3 +6,155 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <semaphore.h>
+
+
+// A structure to track system resources
+typedef struct resources{
+		
+	int available[100][100];	// The availible amount of each resource
+	int max[100][100];			// The maximum demand of each customer
+	int allocated[100][100];	// The amount currently allocated to each customer
+	int need[100][100];			// The remaining need of each customer
+	int n;						// # of customers (used to size matrix)
+	int m;						// # of unique resources (used to size matrix)
+	
+} Resources;
+
+
+// Function Declarations
+char* readFile(char* file_name);					// Function to read from sample4_in.txt
+int populateResourcesStruct(char* resource_data); 		// Creates and populates a Resources struct
+
+
+// Global Variables
+char lines[20][100];
+Resources data;
+
+// Main
+int main( int argc, char *argv[]) {
+	
+	// Read from sample4_in.txt
+	char* resource_data;
+	resource_data = readFile("sample4_in.txt");
+	
+	// Create and populate resources structure
+	populateResourcesStruct(resource_data);
+	
+	// Print out values of data.max array (for testing)
+	int i = 0;
+	int j = 0;
+	while (i < data.n) {
+		while (j < data.m) {
+			
+			printf("%d, ", data.max[i][j]);
+			
+			j++;
+		}
+		printf("\n");
+		j = 0;
+		i++;
+	}
+	
+	return 0;
+}
+
+
+char* readFile(char* file_name) {
+	
+	// Open file
+	FILE *in = fopen(file_name, "r");
+	
+	// Check that file has opened correctly
+	if(!in)
+	{
+		printf("Child A: Error in opening input file...exiting with error code -1\n");
+		exit(0);
+	}
+
+	// Create dynamic array to hold file content
+	struct stat st;
+	fstat(fileno(in), &st);
+	char* fileContent = (char*)malloc(((int)st.st_size+1)* sizeof(char));
+	fileContent[0]='\0';
+	
+	// Loop through file and append contents to fileContent
+	while(!feof(in))
+	{
+		char line[100];
+		if(fgets(line,100,in)!=NULL)
+		{
+			strncat(fileContent,line,strlen(line));
+			strcpy(lines[0], line);
+		}
+	}
+	
+	// Close file
+	fclose(in);
+	
+	return fileContent;
+}
+
+
+int populateResourcesStruct(char* resource_data) {
+	
+	// Track how many customer entries (lines) we have
+	int num_customers = 0;
+	int num_unique_resources = 0;
+	
+	// Store information
+	char *temp_lines[100];
+
+	// Seperate string by each line, save to temp_lines
+	int i = 0;
+	char *line = strtok(resource_data, "\n");
+	
+	while (line != NULL) {
+		temp_lines[i] = line;
+		line = strtok(NULL, "\n");
+		
+		num_customers++;
+		i++;
+	}
+	
+	// Seperate each line by commas, save to data.max[][]
+	i = 0;
+	int j = 0;
+	char *c;
+	
+	while (i < num_customers) {
+		c = strtok(temp_lines[i], ",");
+		num_unique_resources = 0;
+		
+		while (c != NULL) {
+			data.max[i][j] = atol(c);
+			c = strtok(NULL, ",");
+		
+			num_unique_resources++;
+			j++;
+		}
+		
+		j = 0;
+		i++;
+	}
+	
+	// Save matrix dimensions to struct
+	data.n = num_customers;
+	data.m = num_unique_resources;
+	
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
