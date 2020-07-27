@@ -29,7 +29,7 @@ int populateResourcesStruct(char* resource_data); 		// Creates and populates a R
 // Global Variables
 char lines[20][100];
 Resources data;
-
+//int check_safe(Resources* data);
 // Main
 int main( int argc, char *argv[]) {
 	
@@ -54,6 +54,7 @@ int main( int argc, char *argv[]) {
 		j = 0;
 		i++;
 	}
+	//request[data.m];
 	
 	return 0;
 }
@@ -142,4 +143,52 @@ int populateResourcesStruct(char* resource_data) {
 	data.m = num_unique_resources;
 	
 	return 0;
+}
+
+int check_safe(Resources data){
+
+	int ii,jj, work[data.m],finish[data.n];
+
+	int success = 0;
+
+	for(ii=0;ii<data.m;ii++){
+
+	work[ii] = data.available[ii];
+
+	}
+
+	for(ii=0;ii<data.n;ii++){//sets all finish to start at 0
+
+
+
+	finish[ii] = 0;
+
+	}
+
+
+
+	for(ii=0;ii<data.n;ii++){
+
+		if(finish[ii]==0){
+
+			for(jj=0;jj<data.m;jj++){
+
+			if(data.need[ii][jj] > work[jj])
+				success = -1;
+				return success;
+				
+	}
+
+		for(jj=0;jj<data.m;jj++)
+
+		work[jj] += data.allocated[ii][jj];
+
+	success = 1;
+
+	}
+
+	}
+
+	return success;
+
 }
