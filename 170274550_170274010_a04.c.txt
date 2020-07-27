@@ -35,7 +35,7 @@ int main( int argc, char *argv[]) {
 	
 	// Read from sample4_in.txt
 	char* resource_data;
-	resource_data = readFile("sample4_in.txt");
+	resource_data = readFile(argv[1]);
 	
 	// Create and populate resources structure
 	populateResourcesStruct(resource_data);
@@ -143,18 +143,3 @@ int populateResourcesStruct(char* resource_data) {
 	
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
