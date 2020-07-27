@@ -10,4 +10,4 @@ Installation Instructions
 		$make
 
 	Then run the code with the following command
-		$./Assignment_4
+		$./Assignment_4 sample4_in.txt
