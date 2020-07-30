@@ -1,6 +1,5 @@
 # A4
 
-
 Installation Instructions
 
 	Rename makefile4.mk to Makefile using the following linux CLI command
@@ -10,4 +9,9 @@ Installation Instructions
 		$make
 
 	Then run the code with the following command
-		$./Assignment_4 sample4_in.txt
+		$./Assignment_4 1 3 4 5
+
+		- *NOTE* the numbers following ./Assignment_4 are the maximum number
+			 of availible reasources for each unique resource type
+
+

@@ -11,7 +11,7 @@
 typedef struct resources
 {
 
-	int available[100][100]; 	// The availible amount of each resource
+	int available[100]; 		// The availible amount of each resource
 	int max[100][100];		 	// The maximum demand of each customer
 	int allocated[100][100]; 	// The amount currently allocated to each customer
 	int need[100][100];		 	// The remaining need of each customer
@@ -21,13 +21,15 @@ typedef struct resources
 } Resources;
 
 // Function Declarations
-char *readFile(char *file_name);				  // Function to read from sample4_in.txt
-int populateResourcesStruct(char *resource_data); // Creates and populates a Resources struct
-int promt_user();
-int print_availible_matrix();
-int print_max_matrix();
-int print_allocated_matrix();
-int print_need_matrix();
+char *readFile(char *file_name);					// Function to read from sample4_in.txt
+int populateAvailibleArray(int argc, char *argv[]);	// Fills availible array with data
+int populateMaxMatrix(char *resource_data); 		// Fills Max matrix with data
+int initialize_data_structure();					// Fills all matricies with -1
+int promt_user();									// Prompts user for input
+int print_availible_array();						// Prints the availibility array
+int print_max_matrix();								// Prints the max matrix
+int print_allocated_matrix();						// Prints the allocation matrix
+int print_need_matrix();							// Prints the need matrix
 
 
 // Global Variables
@@ -44,19 +46,19 @@ int main(int argc, char *argv[])
 
 	// Read from sample4_in.txt
 	char *resource_data;
-	resource_data = readFile(argv[1]);
+	resource_data = readFile("sample4_in.txt");
 
 	// Create and populate resources structure
-	populateResourcesStruct(resource_data);
+	populateMaxMatrix(resource_data);
+	populateAvailibleArray(argc, argv);
+	
+	// Create sem locks
 	sem_init(&mutexalloc,0,1);
 	sem_init(&mutexavail,0,1);
 	sem_init(&mutexneed,0,1);
 	
 	// Promp user for input
 	promt_user();
-	
-	// TESTING - Print out all matricies
-	print_max_matrix();
 
 	return 0;
 }
@@ -97,7 +99,19 @@ char *readFile(char *file_name)
 	return fileContent;
 }
 
-int populateResourcesStruct(char *resource_data)
+int populateAvailibleArray(int argc, char *argv[])
+{
+	
+	for (int i = 1; i < argc - 1; i++) 
+	{
+		data.available[i - 1] = atoi(argv[i]);
+	}
+	
+	
+	return 0;
+}
+
+int populateMaxMatrix(char *resource_data)
 {
 
 	// Store information
@@ -156,7 +170,7 @@ int release_resources(int customer_num, int request[])
 		
 		// Update availiblity matrix
 		sem_wait(&mutexavail);
-		data.available[customer_num][i] += request[i];
+		//data.available[customer_num][i] += request[i];
 		sem_post(&mutexavail);
 		
 		// Update needs matrix
@@ -241,10 +255,23 @@ int promt_user()
 	
 	// Determine which command was given
 	if (strncmp(request, print_command, 1) == 0) {
-		printf("Printing Data Structures...\n");
+		printf("Printing Data Structures...\n\n");
+		
+		printf("Availible Resources: \n");
+		print_availible_array();
+		
+		printf("Max Request Matrix: \n");
+		print_max_matrix();
+		
+		printf("Allocation Matrix: \n");
+		print_allocated_matrix();
+		
+		printf("Need Matrix: \n");
+		print_need_matrix();
 		
 	} else if (strncmp(request, request_command, 2) == 0) {
 		printf("Processing Resouce Request...\n");
+		
 		
 	} else if (strncmp(request, release_command, 2) == 0) {
 		printf("Releaseing Resources...\n");
@@ -256,22 +283,16 @@ int promt_user()
 	return 0;
 }
 
-int print_availible_matrix() 
+int print_availible_array() 
 {
 	// Print out values of data.max array (for testing)
 	int i = 0;
-	int j = 0;
-	while (i < data.num_customers)
+	while (i < data.num_unique_resources)
 	{
-		while (j < data.num_unique_resources)
-		{
-			printf("%d, ", data.max[i][j]);
-			j++;
-		}
-		printf("\n");
-		j = 0;
+		printf("%d, ", data.available[i]);
 		i++;
 	}
+	printf("\n\n");
 	
 	return 0;
 }
@@ -294,6 +315,8 @@ int print_max_matrix()
 		i++;
 	}
 	
+	printf("\n");
+	
 	return 0;
 }
 
@@ -315,6 +338,8 @@ int print_allocated_matrix()
 		i++;
 	}
 	
+	printf("\n");
+	
 	return 0;	
 }
 
@@ -335,6 +360,8 @@ int print_need_matrix()
 		j = 0;
 		i++;
 	}
+	
+	printf("\n");
 	
 	return 0;
 }
