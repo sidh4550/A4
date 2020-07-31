@@ -24,6 +24,7 @@ typedef struct resources
 char *readFile(char *file_name);					// Function to read from sample4_in.txt
 int populateAvailibleArray(int argc, char *argv[]);	// Fills availible array with data
 int populateMaxMatrix(char *resource_data); 		// Fills Max matrix with data
+int populateNeedMatrix();							// Updates Need matrix
 int initialize_data_structure();					// Fills all matricies with -1
 int promt_user();									// Prompts user for input
 int print_availible_array();						// Prints the availibility array
@@ -51,14 +52,23 @@ int main(int argc, char *argv[])
 	// Create and populate resources structure
 	populateMaxMatrix(resource_data);
 	populateAvailibleArray(argc, argv);
+	populateNeedMatrix();
 	
 	// Create sem locks
 	sem_init(&mutexalloc,0,1);
 	sem_init(&mutexavail,0,1);
 	sem_init(&mutexneed,0,1);
 	
-	// Promp user for input
 	promt_user();
+	
+	/*
+	// Promp user for input
+	int flag = 0;
+	while (flag == 0) 
+	{
+		flag = promt_user();
+	}
+	*/
 
 	return 0;
 }
@@ -156,6 +166,19 @@ int populateMaxMatrix(char *resource_data)
 	return 0;
 }
 
+int populateNeedMatrix()
+{
+	for (int i = 0; i < data.num_customers; i++)
+	{
+		for (int j = 0; j < data.num_unique_resources; j++)
+		{
+			data.need[i][j] = data.max[i][j] - data.allocated[i][j];
+		}
+	}
+	
+	return 0;
+}
+
 int release_resources(int customer_num, int request[]) 
 {
 	
@@ -200,7 +223,7 @@ int check_safe()
 		finish[ii] = 0;
 	}
 
-	// Find element where finish[] = 0 and need[] <= work
+	// Find elements where finish[] = 0 and need[] <= work
 	for (ii = 0; ii < data.num_customers; ii++) 
 	{
 
@@ -249,6 +272,9 @@ int promt_user()
 	
 	// Create variable to store user input 
 	char request[100];
+	int i = 0;
+	int input[100];
+	char *token;
 	
 	// Prompt user for input
 	fgets(request, 100, stdin);
@@ -272,12 +298,51 @@ int promt_user()
 	} else if (strncmp(request, request_command, 2) == 0) {
 		printf("Processing Resouce Request...\n");
 		
+		// Fill input[] array with command
+		token = strtok(request, " ");
+		i = 0;
+		
+		while(token != NULL)
+		{
+			token = strtok(NULL, " ");
+			input[i] = *token - '0';
+			i++;
+		}
+		
+		// Function Call (**Placeholder**)
+		//check_safe(input);
+		
 		
 	} else if (strncmp(request, release_command, 2) == 0) {
 		printf("Releaseing Resources...\n");
 		
+		// Fill input[] array with command
+		token = strtok(request, " ");
+		i = 0;
+		
+		while(token != NULL)
+		{
+			token = strtok(NULL, " ");
+			input[i] = *token - '0';
+			i++;
+		}
+		
+		// Function Call (**Placeholder**)
+		//check_safe(input);
+		
 	} else if (strncmp(request, run_command, 3) == 0) {
 		printf("Running Safety Algorithm...\n");
+		
+		// Fill input[] array with command
+		token = strtok(request, " ");
+		i = 0;
+		
+		while(token != NULL)
+		{
+			token = strtok(NULL, " ");
+			input[i] = *token - '0';
+			i++;
+		}
 	}
 	
 	return 0;
