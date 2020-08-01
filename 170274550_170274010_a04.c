@@ -56,14 +56,14 @@ int main(int argc, char *argv[])
 	
 	promt_user();
 	
-	/*
+	
 	// Promp user for input
 	int flag = 0;
 	while (flag == 0) 
 	{
 		flag = promt_user();
 	}
-	*/
+	
 
 	return 0;
 }
