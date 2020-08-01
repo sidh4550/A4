@@ -31,14 +31,13 @@ int print_availible_array();						// Prints the availibility array
 int print_max_matrix();								// Prints the max matrix
 int print_allocated_matrix();						// Prints the allocation matrix
 int print_need_matrix();							// Prints the need matrix
-
+void requestResource(int input[]);
+void release_resources(int input[]);
 
 // Global Variables
 char lines[20][100];
 Resources data;
-sem_t mutexalloc; 
-sem_t mutexavail; 
-sem_t mutexneed; 
+
 //int check_safe(Resources* data);
 
 // Main
@@ -55,9 +54,6 @@ int main(int argc, char *argv[])
 	populateNeedMatrix();
 	
 	// Create sem locks
-	sem_init(&mutexalloc,0,1);
-	sem_init(&mutexavail,0,1);
-	sem_init(&mutexneed,0,1);
 	
 	promt_user();
 	
@@ -178,82 +174,66 @@ int populateNeedMatrix()
 	
 	return 0;
 }
+int 
 
-int release_resources(int customer_num, int request[]) 
+int release_resources(int input[]) 
 {
 	
 	int i;
-	for (i = 0; i < data.num_unique_resources; i++) 
-	{
+	int customer_num = input[0];
+	if(input[1]<=data.allocated[id][0]&&input[2]<=data.allocated[id][1]&&input[3]<=data.allocated[id][2]&&input[4]<=data.allocated[id][3]){
+		for (i = 0; i < data.num_unique_resources; i++) 
+		{
+			
+			// Update allocations matrix
+			//sem_wait(&mutexalloc);
+			data.allocated[customer_num][i] -= input[i+1];
+			//sem_post(&mutexalloc);
+			
+			// Update availiblity matrix
+			//sem_wait(&mutexavail);
+			data.available[customer_num][i] += input[i+1];
+			//sem_post(&mutexavail);
+			
+			// Update needs matrix
+			//sem_wait(&mutexneed);
+			data.need[customer_num][i] += input[i+1];
+			//sem_post(&mutexneed);
+		}
 		
-		// Update allocations matrix
-		sem_wait(&mutexalloc);
-		data.allocated[customer_num][i] -= request[i];
-		sem_post(&mutexalloc);
-		
-		// Update availiblity matrix
-		sem_wait(&mutexavail);
-		//data.available[customer_num][i] += request[i];
-		sem_post(&mutexavail);
-		
-		// Update needs matrix
-		sem_wait(&mutexneed);
-		data.need[customer_num][i] = data.max[customer_num][i] + data.allocated[customer_num][i];
-		sem_post(&mutexneed);
 	}
+	else{
+		printf("Release cannon exceed allocated resources");
+	}
+	
 	
 	return 1;
 }
 
-int check_safe()
-{
 
-	int ii, jj, work[data.num_unique_resources], finish[data.num_customers];
-	int success = 0;
 
-	// Set work equal to availiblity
-	for (ii = 0; ii < data.num_unique_resources; ii++) 
-	{
-		work[ii] = data.available[ii];
-	}
+void requestResource(int input[]){
+	int id = input[0];
+	if(input[1]<=data.need[id][0]&&input[2]<=data.need[id][1]&&input[3]<=data.need[id][2]&&input[4]<=data.need[id][3]){
+		if(input[1]<=data.available[0]&&input[2]<=data.available[1]&&input[3]<=data.available[2]&&input[4]<=data.available[3]){
+			for (i = 0; i < data.num_unique_resources; i++){
+				data.available[i]-=input[i+1];
+				data.allocated[i]+=input[i+1];
+				data.need[i]-=input[i+1];
 
-	// Populate finish[] with 0's
-	for (ii = 0; ii < data.num_customers; ii++) 
-	{ 
-		finish[ii] = 0;
-	}
-
-	// Find elements where finish[] = 0 and need[] <= work
-	for (ii = 0; ii < data.num_customers; ii++) 
-	{
-
-		if (finish[ii] == 0) 
-		{
-
-			for (jj = 0; jj < data.num_unique_resources; jj++) 
-			{
-
-				if (data.need[ii][jj] > work[jj]) 
-				{
-					success = -1;
-				}
-				
-				return success;
 			}
-
-			for (jj = 0; jj < data.num_unique_resources; jj++) 
-			{
-
-				work[jj] += data.allocated[ii][jj];
 				
-			}
 
-			success = 1;
+		}
+		else{
+			printf("Request exceeds available resources")
 		}
 	}
-
-	return success;
+	else{
+	printf("Request exceeds customer need\n");
 }
+}	
+
 
 int promt_user() 
 {
@@ -309,7 +289,7 @@ int promt_user()
 			i++;
 		}
 		
-		// Function Call (**Placeholder**)
+		requestResource(input);
 		//check_safe(input);
 		
 		
@@ -327,7 +307,7 @@ int promt_user()
 			i++;
 		}
 		
-		// Function Call (**Placeholder**)
+		release_resources(input);
 		//check_safe(input);
 		
 	} else if (strncmp(request, run_command, 3) == 0) {
@@ -430,4 +410,3 @@ int print_need_matrix()
 	
 	return 0;
 }
-
