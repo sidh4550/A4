@@ -32,7 +32,6 @@ int print_max_matrix();								// Prints the max matrix
 int print_allocated_matrix();						// Prints the allocation matrix
 int print_need_matrix();							// Prints the need matrix
 void requestResource(int input[]);
-void release_resources(int input[]);
 
 // Global Variables
 char lines[20][100];
@@ -174,15 +173,15 @@ int populateNeedMatrix()
 	
 	return 0;
 }
-int 
+
 
 int release_resources(int input[]) 
 {
 	
-	int i;
+	
 	int customer_num = input[0];
-	if(input[1]<=data.allocated[id][0]&&input[2]<=data.allocated[id][1]&&input[3]<=data.allocated[id][2]&&input[4]<=data.allocated[id][3]){
-		for (i = 0; i < data.num_unique_resources; i++) 
+	if(input[1]<=data.allocated[customer_num][0]&&input[2]<=data.allocated[customer_num][1]&&input[3]<=data.allocated[customer_num][2]&&input[4]<=data.allocated[customer_num][3]){
+		for (int i = 0; i < data.num_unique_resources; i++) 
 		{
 			
 			// Update allocations matrix
@@ -192,7 +191,7 @@ int release_resources(int input[])
 			
 			// Update availiblity matrix
 			//sem_wait(&mutexavail);
-			data.available[customer_num][i] += input[i+1];
+			data.available[i] += input[i+1];
 			//sem_post(&mutexavail);
 			
 			// Update needs matrix
@@ -216,17 +215,17 @@ void requestResource(int input[]){
 	int id = input[0];
 	if(input[1]<=data.need[id][0]&&input[2]<=data.need[id][1]&&input[3]<=data.need[id][2]&&input[4]<=data.need[id][3]){
 		if(input[1]<=data.available[0]&&input[2]<=data.available[1]&&input[3]<=data.available[2]&&input[4]<=data.available[3]){
-			for (i = 0; i < data.num_unique_resources; i++){
+			for (int i = 0; i < data.num_unique_resources; i++){
 				data.available[i]-=input[i+1];
-				data.allocated[i]+=input[i+1];
-				data.need[i]-=input[i+1];
+				data.allocated[id][i]+=input[i+1];
+				data.need[id]	[i]-=input[i+1];
 
 			}
 				
 
 		}
 		else{
-			printf("Request exceeds available resources")
+			printf("Request exceeds available resources");
 		}
 	}
 	else{
