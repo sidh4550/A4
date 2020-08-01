@@ -174,7 +174,6 @@ int populateNeedMatrix()
 	return 0;
 }
 
-
 int release_resources(int input[]) 
 {
 	
@@ -209,8 +208,6 @@ int release_resources(int input[])
 	return 1;
 }
 
-
-
 void requestResource(int input[]){
 	int id = input[0];
 	if(input[1]<=data.need[id][0]&&input[2]<=data.need[id][1]&&input[3]<=data.need[id][2]&&input[4]<=data.need[id][3]){
@@ -232,7 +229,6 @@ void requestResource(int input[]){
 	printf("Request exceeds customer need\n");
 }
 }	
-
 
 int promt_user() 
 {
@@ -284,9 +280,16 @@ int promt_user()
 		while(token != NULL)
 		{
 			token = strtok(NULL, " ");
-			input[i] = *token - '0';
-			i++;
+			
+			if (token != NULL)
+			{
+				input[i] = *token - '0';
+				printf("input --> %d\n", input[i]);
+				i++;
+			}
+			
 		}
+		
 		
 		requestResource(input);
 		//check_safe(input);
@@ -302,8 +305,14 @@ int promt_user()
 		while(token != NULL)
 		{
 			token = strtok(NULL, " ");
-			input[i] = *token - '0';
-			i++;
+			
+			if (token != NULL)
+			{
+				input[i] = *token - '0';
+				printf("input --> %d\n", input[i]);
+				i++;
+			}
+			
 		}
 		
 		release_resources(input);
@@ -316,11 +325,21 @@ int promt_user()
 		token = strtok(request, " ");
 		i = 0;
 		
+		// Fill input[] array with command
+		token = strtok(request, " ");
+		i = 0;
+		
 		while(token != NULL)
 		{
 			token = strtok(NULL, " ");
-			input[i] = *token - '0';
-			i++;
+			
+			if (token != NULL)
+			{
+				input[i] = *token - '0';
+				printf("input --> %d\n", input[i]);
+				i++;
+			}
+			
 		}
 	}
 	
