@@ -1,4 +1,15 @@
 # A4
+Title:
+
+CP386 Assignment 4: Bankers' Algorithm
+
+Description:
+This program simulates a "banker" that would manage and keep track of resources. The program handles resource requests and releases, and ensures that each customer request is "safe" meaning that the system has enough resources to manage the request.
+
+Motivation:
+
+To run the bankers' algorithm in C on a variety of processes that require a variety of resources of varying types in an easy-to-understand format.
+
 
 Installation Instructions
 
@@ -9,9 +20,19 @@ Installation Instructions
 		$make
 
 	Then run the code with the following command
-		$./Assignment_4 1 3 4 5
+		$./Assignment_4 [your numbers here]
 
 		- *NOTE* the numbers following ./Assignment_4 are the maximum number
 			 of availible reasources for each unique resource type
+Features:
+
+-Gets resouce numbers from a text file and then saves them into an array for future use 
+
+-Asks user for input to see how many resources the program starts with.
+
+-Lets the user request and release resources from processes, and ensure that the request and release are doable, before letting them go through
+
+-Uses a saftey check, which ensure that each request and release is allowed, and the system has enough resources to accomadate.
+
 
 
