@@ -36,7 +36,31 @@ Features:
 
 
 Screenshots:
+
+
+
 ![Image 1](https://github.com/sidh4550/A4/blob/master/1.PNG)
 ![Image 2](https://github.com/sidh4550/A4/blob/master/2.PNG)
 ![Image 3](https://github.com/sidh4550/A4/blob/master/3.PNG)
 ![Image 4](https://github.com/sidh4550/A4/blob/master/4.PNG)
+
+
+Contribution:
+Deepinder- 
+	void requestResource(int input[]);
+	int check_safe(int type, int input[]);
+	int release_resources(int input[]);
+	void *runThread(void *thread);
+	void runProgram(int input[]);
+	
+Matteo:
+int populateAvailibleArray(int argc, char *argv[]);	// Fills availible array with data
+	int populateMaxMatrix(char *resource_data); 		// Fills Max matrix with data
+	int populateNeedMatrix();							// Updates Need matrix
+	int initialize_data_structure();					// Fills all matricies with -1
+	int promt_user();									// Prompts user for input
+	int print_availible_array();						// Prints the availibility array
+	int print_max_matrix();								// Prints the max matrix
+	int print_allocated_matrix();						// Prints the allocation matrix
+	int print_need_matrix();	
+	
