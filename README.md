@@ -35,4 +35,8 @@ Features:
 -Uses a saftey check, which ensure that each request and release is allowed, and the system has enough resources to accomadate.
 
 
-
+Screenshots:
+![Image 1](https://github.com/sidh4550/A4/blob/master/1.PNG)
+![Image 2](https://github.com/sidh4550/A4/blob/master/2.PNG)
+![Image 3](https://github.com/sidh4550/A4/blob/master/3.PNG)
+![Image 4](https://github.com/sidh4550/A4/blob/master/4.PNG)
