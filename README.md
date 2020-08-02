@@ -46,7 +46,7 @@ Screenshots:
 
 
 Contribution:
-Deepinder- 
+Deepinder:
 
 	void requestResource(int input[]);
 	
@@ -60,7 +60,8 @@ Deepinder-
 	
 	
 Matteo:
-int populateAvailibleArray(int argc, char *argv[]);	// Fills availible array with data
+
+	int populateAvailibleArray(int argc, char *argv[]);	// Fills availible array with data
 
 	int populateMaxMatrix(char *resource_data); 		// Fills Max matrix with data
 
@@ -78,3 +79,62 @@ int populateAvailibleArray(int argc, char *argv[]);	// Fills availible array wit
 	
 	int print_need_matrix();	
 	
+
+__Features__ 
+Error checker for too many char
+Thread clearer
+Exit command for when done. 
+Type "Exit" to close program.
+
+__Tests__
+EX: ./Assignment_4 10 10 10 10
+
+RQ 0 1 1 1 1
+
+RL 0 1 1 1 1
+
+*
+
+RUN
+
+__Code Example__
+
+			void requestResource(int input[]){
+		int id = input[0];
+		if(input[1]<=data.need[id][0]&&input[2]<=data.need[id][1]&&input[3]<=data.need[id][2]&&input[4]<=data.need[id][3]){
+			if(input[1]<=data.available[0]&&input[2]<=data.available[1]&&input[3]<=data.available[2]&&input[4]<=data.available[3]){
+				for (int i = 0; i < data.num_unique_resources; i++){
+					data.available[i]-=input[i+1];
+					data.allocated[id][i]+=input[i+1];
+					data.need[id]	[i]-=input[i+1];
+
+				}
+					
+
+			}
+			else{
+				printf("Request exceeds available resources");
+			}
+		}
+		else{
+		printf("Request exceeds customer need\n");
+	}
+
+
+__Authors__
+Deepinder Sidhu @sidh4550
+
+
+Matteo Straditto @stra4010
+
+__Credits__
+All credits go to Deepinder Sidhu and Matteo Straditto. Some inspiration taken from online tutorials and previous Assignments done in class.
+
+__LICENSE__
+
+COPYRIGHT Deepinder Sidhu and Matteo Straditto 2020
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
